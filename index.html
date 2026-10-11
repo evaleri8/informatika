@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Учебные материалы по информатике для 10–11 классов и ЕГЭ">
+  <title>Информатика — учебные материалы</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html"><span class="brand-icon">&lt;/&gt;</span> Информатика</a>
+      <span class="header-note">Ефимова Валерия Афанасьевна</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="hero">
+      <p class="kicker">Учебные материалы</p>
+      <h1>Уроки информатики</h1>
+      <p class="subtitle">Выберите класс и уровень подготовки. Откройте лекцию, практику или домашнее задание.</p>
+    </section>
+    <div class="nav-wrap">
+      <nav class="main-tabs" aria-label="Класс или ЕГЭ">
+        <button type="button" class="tab" data-tab="10">10 класс</button>
+        <button type="button" class="tab" data-tab="11">11 класс</button>
+        <button type="button" class="tab" data-tab="ege">ЕГЭ</button>
+      </nav>
+      <div class="level-picker" id="levelPicker" aria-label="Уровень обучения">
+        <button type="button" class="level-btn" data-level="base">Базовый</button>
+        <button type="button" class="level-btn" data-level="prof">Углублённый</button>
+      </div>
+    </div>
+    <div id="content" aria-live="polite"></div>
+  </main>
+  <footer class="footer"><div class="wrap">Информатика · 10–11 классы · ЕГЭ</div></footer>
+  <script src="data.js"></script>
+  <script>
+    const data = window.SITE_DATA;
+    const content = document.getElementById('content');
+    const picker = document.getElementById('levelPicker');
+    const tabs = Array.from(document.querySelectorAll('[data-tab]'));
+    const levels = Array.from(document.querySelectorAll('[data-level]'));
+
+    function escapeHtml(v) {
+      return String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function selectedRoute() {
+      const hash = location.hash.slice(1);
+      if (hash === 'ege') return { grade:'ege', level:'' };
+      const match = /^(10|11)-(base|prof)$/.exec(hash);
+      return match ? { grade:match[1], level:match[2] } : { grade:'10', level:'base' };
+    }
+    function lessonHtml(lesson,course) {
+      const base = `${course.path}/lesson${lesson.number}`;
+      return `<article class="lesson-card">
+        <div class="lesson-top"><span class="lesson-label">Урок №${lesson.number}</span></div>
+        <h4>${escapeHtml(lesson.title)}</h4>
+        <div class="action-row">
+          <a class="action-link primary" href="${base}/lection.html">Лекция ↗</a>
+          <a class="action-link" href="${base}/practice.html">Практика ↗</a>
+          <a class="action-link" href="${base}/homework.html">ДЗ ↗</a>
+        </div>
+      </article>`;
+    }
+    function showCourse(key) {
+      const course = data.courses[key];
+      const total = course.sections.reduce((sum,s)=>sum+s.lessons.length,0);
+      content.innerHTML = `<div class="course-heading"><div><h2>${escapeHtml(course.name)}</h2></div><span class="count">${total} уроков</span></div>` +
+        course.sections.map((section,i) => `<section class="section">
+          <div class="section-head"><span class="section-number">${String(i+1).padStart(2,'0')}</span><h3>${escapeHtml(section.title)}</h3></div>
+          <div class="lesson-grid">${section.lessons.map(lesson=>lessonHtml(lesson,course)).join('')}</div>
+        </section>`).join('');
+    }
+    function showEge() {
+      content.innerHTML = `<div class="course-heading"><div><h2>ЕГЭ по информатике</h2></div></div>
+        <section class="section"><div class="ege-grid">${data.ege.map(task => `
+          <article class="ege-card"><div class="ege-number">${task.number}</div>
+            <h4>Задание №${task.number}</h4>
+            <div class="action-row">${task.types.map(type=>`
+              <a class="action-link${type===1?' primary':''}" href="ege/task${task.number}/type${type}.html">Тип ${type} ↗</a>`).join('')}
+            </div>
+          </article>`).join('')}</div></section>`;
+    }
+    function render() {
+      const route = selectedRoute();
+      tabs.forEach(b => { const active = b.dataset.tab===route.grade; b.classList.toggle('active',active); b.setAttribute('aria-pressed',String(active)); });
+      levels.forEach(b => { const active = b.dataset.level===route.level; b.classList.toggle('active',active); b.setAttribute('aria-pressed',String(active)); });
+      picker.hidden = route.grade==='ege';
+      if (route.grade==='ege') showEge();
+      else showCourse(`${route.grade}-${route.level}`);
+    }
+    tabs.forEach(b => b.addEventListener('click',() => {
+      const r=selectedRoute();
+      location.hash = b.dataset.tab==='ege' ? 'ege' : `${b.dataset.tab}-${r.level||'base'}`;
+      render();
+    }));
+    levels.forEach(b => b.addEventListener('click',() => { location.hash = `${selectedRoute().grade}-${b.dataset.level}`; render(); }));
+    window.addEventListener('hashchange',render);
+    render();
+  </script>
+</body>
+</html>
