@@ -3,9 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Лекция · Ветвления. Составные условия</title>
-  <link rel="stylesheet" href="../../../styles.css">
+  <meta name="description" content="Информатика, 11 класс, базовый уровень. Урок 16: Ветвления. Составные условия.">
+  <title>Лекция — Урок 16. Ветвления. Составные условия</title>
+  <link rel="stylesheet" href="../../../styles2.css">
 </head>
-<body>
+<body class="lesson-page">
+<main class="lesson-container">
+  <div class="lesson-topbar">
+    <a class="lesson-back" href="../../../index.html#11-base">← К списку уроков</a>
+    <span class="lesson-tag">11 КЛАСС · БАЗОВЫЙ УРОВЕНЬ</span>
+  </div>
+  <header class="lesson-header">
+    <p class="eyebrow">Урок №16 · Лекция</p>
+    <h1>Ветвления. Составные условия</h1>
+    <p>Основные понятия, примеры и способы решения</p>
+  </header>
+  <nav class="lesson-nav" aria-label="Разделы урока"><a href="lection.html" aria-current="page">Лекция</a>
+<a href="practice.html">Практика</a>
+<a href="homework.html">Домашнее задание</a></nav>
+<div class="info"><strong>Цель:</strong> реализовывать выбор действий с помощью if, elif и else; составлять логические условия и проверять границы диапазонов.</div><h2>1. Условие и сравнение</h2><p>Условие даёт логический результат <code>True</code> или <code>False</code>. В Python сравнивают значения операторами <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>. Знак <code>=</code> используется для присваивания, а <code>==</code> — для проверки равенства.</p><h2>2. Полное и неполное ветвление</h2><pre style="overflow-x:auto;padding:16px;background:#eef2ff;border-radius:10px;font-size:15px;line-height:1.5"><code>x = int(input())
+if x &gt;= 0:
+    print(&quot;Неотрицательное&quot;)
+else:
+    print(&quot;Отрицательное&quot;)</code></pre><p>После условия ставится двоеточие, тело ветви выделяется отступом; в примерах — четыре пробела. При истинном условии выполняется блок <code>if</code>, иначе — блок <code>else</code>. Если действие нужно только при истинном условии, блок <code>else</code> можно не писать.</p><h2>3. Несколько вариантов</h2><pre style="overflow-x:auto;padding:16px;background:#eef2ff;border-radius:10px;font-size:15px;line-height:1.5"><code>x = int(input())
+if x &gt; 0:
+    print(&quot;Положительное&quot;)
+elif x &lt; 0:
+    print(&quot;Отрицательное&quot;)
+else:
+    print(&quot;Ноль&quot;)</code></pre><p>В цепочке if–elif–else выполняется первая ветвь с истинным условием; если таких нет, выполняется else. Это отличается от нескольких отдельных if, у которых могут выполниться несколько блоков.</p><h2>4. Составные условия</h2><div class="table-wrap"><table><thead><tr><th scope="col">Операция</th><th scope="col">Когда истинна</th><th scope="col">Пример</th></tr></thead><tbody><tr><td>and</td><td>Обе части истинны.</td><td><code>x &gt;= 10 and x &lt;= 20</code></td></tr><tr><td>or</td><td>Хотя бы одна часть истинна.</td><td><code>x &lt; 10 or x &gt; 20</code></td></tr><tr><td>not</td><td>Исходное условие ложно.</td><td><code>not (x &gt;= 10 and x &lt;= 20)</code></td></tr></tbody></table></div><p>Первое условие задаёт отрезок [10; 20], второе — значения вне него. В Python также допустимо <code>10 &lt;= x &lt;= 20</code>. Для ясности сложные части заключают в скобки. Приоритет операций: сравнения, затем not, and и or.</p><h2>5. Пример с границами</h2><p>В учебной задаче результат от 0 до 100 баллов включительно. От 80 — «Высокий», от 50 до 79 — «Достаточный», ниже 50 — «Требуется доработка». Недопустимое значение обрабатывается отдельно.</p><pre style="overflow-x:auto;padding:16px;background:#eef2ff;border-radius:10px;font-size:15px;line-height:1.5"><code>score = int(input())
+if score &lt; 0 or score &gt; 100:
+    print(&quot;Ошибка данных&quot;)
+elif score &gt;= 80:
+    print(&quot;Высокий&quot;)
+elif score &gt;= 50:
+    print(&quot;Достаточный&quot;)
+else:
+    print(&quot;Требуется доработка&quot;)</code></pre><p>Во второй проверке диапазон уже ограничен предыдущими условиями, поэтому повторять верхние границы не требуется. Если поменять порядок порогов 50 и 80 без изменения условий, высокие результаты попадут в раннюю ветвь.</p><h2>6. Проверка ветвлений</h2><div class="table-wrap"><table><thead><tr><th scope="col">Случаи</th><th scope="col">Для чего нужны</th></tr></thead><tbody><tr><td>Ниже, на границе и выше порога</td><td>Обнаружить ошибку &lt; вместо &lt;= или наоборот.</td></tr><tr><td>Все ветви</td><td>Проверить, достижим ли каждый предусмотренный результат.</td></tr><tr><td>Недопустимые значения</td><td>Проверить отказ или сообщение, если это требует условие.</td></tr><tr><td>Особые точки</td><td>Ноль, равные значения, концы диапазона.</td></tr></tbody></table></div><p>Для примера полезны −1, 0, 49, 50, 79, 80, 100 и 101. Ожидаемый результат определяют по условию задачи до запуска программы. Не следует считать вход допустимым только потому, что программа смогла с ним выполнить вычисления.</p><div class="important">Для принадлежности диапазону обычно требуется and; для выхода за его границы — or. Читайте условие словами и проверяйте примеры с обоих концов.</div><div class="footer-note"><strong>Учебная основа:</strong> Л. Л. Босова, А. Ю. Босова, «Информатика. 11 класс. Базовый уровень»; К. Ю. Поляков, Е. А. Еремин, «Информатика. 10–11 классы. Базовый и углублённый уровни» — алгоритмы, конструкции и типы данных. <a href="https://bosova.ru/metodist/authors/informatika/3/eor11.php">Электронное приложение Босовой</a>; <a href="https://kpolyakov.spb.ru/school/basebook.htm">материалы УМК Полякова и Еремина</a>. Примеры написаны для Python 3; <a href="https://docs.python.org/3/tutorial/">официальное руководство Python</a>. Объяснения, числовые примеры и задания составлены самостоятельно. Номера параграфов зависят от издания.</div>
+<a class="bottom-next" href="practice.html">Перейти к практике →</a>
+</main>
 </body>
 </html>
