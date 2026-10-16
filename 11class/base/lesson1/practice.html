@@ -3,9 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Практика · Принципы построения и аппаратные компоненты компьютерных сетей. Сетевые протоколы. Сеть Интернет. Адресация в сети Интернет. Система доменных имён</title>
-  <link rel="stylesheet" href="../../../styles.css">
+  <meta name="description" content="Учебные материалы по информатике: компьютерные сети, протоколы, IP-адресация и DNS">
+  <title>Практическая работа — Компьютерные сети, IP и DNS</title>
+  <link rel="stylesheet" href="../../../styles2.css">
 </head>
-<body>
+<body class="lesson-page">
+  <main class="lesson-container">
+    <div class="lesson-topbar">
+      <a class="lesson-back" href="../../../index.html#11-base">← К списку уроков</a>
+      <span class="lesson-tag">11 КЛАСС · БАЗОВЫЙ УРОВЕНЬ</span>
+    </div>
+    <header class="lesson-header">
+      <p class="eyebrow">Урок №1 · Практическая работа · 15 минут</p>
+      <h1>Компьютерные сети, IP-адресация и DNS</h1>
+      <p>Построение схемы сети и анализ обращения к веб-ресурсу</p>
+    </header>
+    <nav class="lesson-nav" aria-label="Разделы урока">
+      <a href="lection.html">Лекция</a>
+<a href="practice.html" aria-current="page">Практика</a>
+<a href="homework.html">Домашнее задание</a>
+    </nav>
+    
+    <div class="info">
+      <strong>Цель:</strong> применить понятия «локальная сеть», «коммутатор», «маршрутизатор»,
+      «сетевой протокол», «IP-адрес» и «DNS» при решении практических задач.
+    </div>
+
+    <h2>Задание 1. Определите типы адресов</h2>
+    <div class="step">
+      <p>Распределите записи по категориям:
+      <strong>IPv4</strong>, <strong>IPv6</strong>, <strong>доменное имя</strong>,
+      <strong>полный веб-адрес (URL)</strong>. Для каждой записи укажите её назначение.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Запись</th><th>Тип</th><th>Назначение</th></tr></thead>
+        <tbody>
+          <tr><td><code>192.168.1.20</code></td><td>…</td><td>…</td></tr>
+          <tr><td><code>2001:db8::25</code></td><td>…</td><td>…</td></tr>
+          <tr><td><code>portal.example.org</code></td><td>…</td><td>…</td></tr>
+          <tr><td><code>https://portal.example.org/lesson</code></td><td>…</td><td>…</td></tr>
+        </tbody>
+      </table></div>
+      <p>Дополнительно объясните, почему запись <code>192.168.1.20</code>
+      не обозначает доменное имя.</p>
+    </div>
+
+    <h2>Задание 2. Проследите обращение к сайту</h2>
+    <div class="step">
+      <p>Пользователь открывает браузер и вводит <code>https://portal.example.org/lesson</code>.
+      Ниже перечислены действия, но их порядок нарушен.</p>
+      <ul>
+        <li><strong>А.</strong> Браузер получает ответ веб-сервера.</li>
+        <li><strong>Б.</strong> DNS-резолвер получает сведения об IP-адресе.</li>
+        <li><strong>В.</strong> Браузер извлекает доменное имя из URL.</li>
+        <li><strong>Г.</strong> Устанавливается соединение с сервером и отправляется HTTPS-запрос.</li>
+      </ul>
+      <ol>
+        <li>Запишите правильную последовательность букв.</li>
+        <li>Укажите, для чего используются <strong>DNS</strong>, <strong>IP</strong> и <strong>HTTPS</strong>.</li>
+        <li>Объясните, почему при уже сохранённом в кэше IP-адресе новый DNS-запрос может не понадобиться.</li>
+      </ol>
+    </div>
+    <a class="bottom-next" href="homework.html">Перейти к домашнему заданию →</a>
+
+  </main>
 </body>
 </html>
