@@ -18,12 +18,13 @@
     <section class="hero">
       <p class="kicker">Учебные материалы</p>
       <h1>Уроки информатики</h1>
-      <p class="subtitle">Выберите класс и уровень подготовки. Откройте лекцию, практику или домашнее задание.</p>
+      <p class="subtitle">Выберите класс и уровень подготовки или откройте курс Python и подготовку к ЕГЭ. В каждом уроке — теория, практика и домашнее задание.</p>
     </section>
     <div class="nav-wrap">
       <nav class="main-tabs" aria-label="Класс или ЕГЭ">
         <button type="button" class="tab" data-tab="10">10 класс</button>
         <button type="button" class="tab" data-tab="11">11 класс</button>
+        <button type="button" class="tab" data-tab="python">Python</button>
         <button type="button" class="tab" data-tab="ege">ЕГЭ</button>
       </nav>
       <div class="level-picker" id="levelPicker" aria-label="Уровень обучения">
@@ -35,6 +36,7 @@
   </main>
   <footer class="footer"><div class="wrap">Информатика · 10–11 классы · ЕГЭ</div></footer>
   <script src="data.js"></script>
+  <script src="python-ege-data.js"></script>
   <script>
     const data = window.SITE_DATA;
     const content = document.getElementById('content');
@@ -47,7 +49,7 @@
     }
     function selectedRoute() {
       const hash = location.hash.slice(1);
-      if (hash === 'ege') return { grade:'ege', level:'' };
+      if (hash === 'ege' || hash === 'python') return { grade:hash, level:'' };
       const match = /^(10|11)-(base|prof)$/.exec(hash);
       return match ? { grade:match[1], level:match[2] } : { grade:'10', level:'base' };
     }
@@ -72,8 +74,28 @@
           <div class="lesson-grid">${section.lessons.map(lesson=>lessonHtml(lesson,course)).join('')}</div>
         </section>`).join('');
     }
+    function trainingCard(lesson) {
+      return `<article class="lesson-card">
+        <div class="lesson-top"><span class="lesson-label">№${lesson.number}</span></div>
+        <h4>${escapeHtml(lesson.title)}</h4>
+        <div class="action-row">
+          <a class="action-link primary" href="${lesson.path}/lection.html">Теория ↗</a>
+          <a class="action-link" href="${lesson.path}/practice.html">Практика ↗</a>
+          <a class="action-link" href="${lesson.path}/homework.html">ДЗ ↗</a>
+          <a class="action-link" href="${lesson.archive}" download>ZIP ↓</a>
+        </div></article>`;
+    }
+    function showPython() {
+      const lessons = window.PYTHON_EGE_DATA.python;
+      content.innerHTML = `<div class="course-heading"><div><h2>Python для подготовки к ЕГЭ</h2><p>28 последовательных уроков: от первой программы до алгоритмов и обработки данных.</p></div><span class="count">28 уроков</span></div>
+        <p>Начните с основ Python, затем переходите к <a href="#ege">заданиям ЕГЭ</a>. В каждом уроке — теория, практика, домашнее задание и программа-пример.</p>
+        <section class="section"><div class="lesson-grid">${lessons.map(trainingCard).join('')}</div></section>`;
+    }
     function showEge() {
-      content.innerHTML = `<div class="course-heading"><div><h2>ЕГЭ по информатике</h2></div></div>
+      content.innerHTML = `<div class="course-heading"><div><h2>ЕГЭ-2027: решение с помощью Python</h2><p>27 уроков по заданиям опубликованного проекта ФИПИ-2027.</p></div></div>
+        <p>Перед изучением заданий пройдите <a href="#python">курс Python</a>. Теория, практика, домашняя работа и учебные данные доступны в карточках.</p>
+        <section class="section"><div class="lesson-grid">${window.PYTHON_EGE_DATA.ege.map(trainingCard).join('')}</div></section>
+        <div class="course-heading"><div><h2>Дополнительные материалы по типам заданий</h2></div></div>
         <section class="section"><div class="ege-grid">${data.ege.map(task => `
           <article class="ege-card"><div class="ege-number">${task.number}</div>
             <h4>Задание №${task.number}</h4>
@@ -86,13 +108,14 @@
       const route = selectedRoute();
       tabs.forEach(b => { const active = b.dataset.tab===route.grade; b.classList.toggle('active',active); b.setAttribute('aria-pressed',String(active)); });
       levels.forEach(b => { const active = b.dataset.level===route.level; b.classList.toggle('active',active); b.setAttribute('aria-pressed',String(active)); });
-      picker.hidden = route.grade==='ege';
+      picker.hidden = route.grade==='ege' || route.grade==='python';
       if (route.grade==='ege') showEge();
+      else if (route.grade==='python') showPython();
       else showCourse(`${route.grade}-${route.level}`);
     }
     tabs.forEach(b => b.addEventListener('click',() => {
       const r=selectedRoute();
-      location.hash = b.dataset.tab==='ege' ? 'ege' : `${b.dataset.tab}-${r.level||'base'}`;
+      location.hash = ['ege','python'].includes(b.dataset.tab) ? b.dataset.tab : `${b.dataset.tab}-${r.level||'base'}`;
       render();
     }));
     levels.forEach(b => b.addEventListener('click',() => { location.hash = `${selectedRoute().grade}-${b.dataset.level}`; render(); }));

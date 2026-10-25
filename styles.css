@@ -63,3 +63,7 @@ h1 { font-size:clamp(29px,4.5vw,40px); line-height:1.2; letter-spacing:-1.25px; 
 .material-switch { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
 .empty-note { padding:16px 0; color:var(--muted); }
 @media(max-width:660px) { .wrap { width:min(100% - 28px,1120px); } .header-note { display:none; } .hero { padding-top:37px; } .nav-wrap { margin-top:22px; } .tab { padding:12px 13px 15px; font-size:13px; } .lesson-grid,.ege-grid { grid-template-columns:1fr; } .course-heading { align-items:flex-start; } .count { display:none; } .lesson-card,.ege-card { padding:19px; } .paper { padding:22px 20px; } }
+
+/* Дополнительные разделы курса. */
+.main-tabs { flex-wrap:wrap; }
+.level-picker[hidden] { display:none; }
